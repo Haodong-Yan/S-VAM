@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>S-VAM | Project Page</title>
+  <meta
+    name="description"
+    content="Project page for S-VAM: Shortcut Video-Action Model by Self-Distilling Geometric and Semantic Foresight."
+  >
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <p class="venue">Anonymous ECCV 2026 Submission</p>
+      <h1>S-VAM: Shortcut Video-Action Model by Self-Distilling Geometric and Semantic Foresight</h1>
+      <p class="authors">Anonymous Authors</p>
+      <p class="affiliations">Affiliations withheld for double-blind review</p>
+
+      <div class="button-row">
+        <a class="button" href="main_final_3.pdf" target="_blank" rel="noreferrer">Paper</a>
+        <a class="button" href="supplementary_document.pdf" target="_blank" rel="noreferrer">Supplement</a>
+        <a class="button" href="supplementary_video.mp4" target="_blank" rel="noreferrer">Video</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>Abstract</h2>
+      <p class="section-text abstract-text">
+        Video action models are promising for robot learning, but existing methods usually trade
+        off between high-quality multi-step foresight and efficient one-step inference. S-VAM
+        addresses this gap with a shortcut video-action model that predicts coherent geometric and
+        semantic future representations in a single forward pass. During training, lightweight
+        decouplers are supervised by vision foundation model features extracted from the diffusion
+        model's own multi-step generated videos. This self-distillation condenses structured
+        generative priors into efficient one-step inference, enabling more accurate and practical
+        robotic control in both simulation and the real world.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Introduction</h2>
+      <p class="section-text">
+        S-VAM starts from a central tension in video-action modeling: one-step denoising features
+        are efficient but temporally unstable and highly entangled, while multi-step generated
+        videos provide coherent future structure at too high a latency for practical control. Our
+        key observation is that the multi-step generative prior can supervise a lightweight
+        shortcut. Instead of running slow iterative video generation at test time, S-VAM directly
+        predicts geometry-aware and semantics-aware foresight that serves as a compact action
+        blueprint.
+      </p>
+      <figure class="media-block">
+        <img
+          src="assets/overview-crop-hi.png"
+          alt="Overview figure for S-VAM showing the shortcut from one-step features to geometric and semantic foresight."
+          loading="lazy"
+        >
+        <figcaption>Overview of the latency-fidelity trade-off and the proposed shortcut in S-VAM.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section">
+      <h2>Method</h2>
+      <p class="section-text">
+        S-VAM extracts one-step denoising features from a video diffusion backbone and routes them
+        through semantic and geometric decouplers. These modules are trained with teacher targets
+        produced by vision foundation models on the diffusion model's own multi-step generated
+        videos. The distilled foresight features are aggregated with the original observation
+        context by a
+        Uni-Perceiver, then consumed by the downstream diffusion policy for action prediction. This
+        design preserves structured future information while keeping inference efficient enough for
+        real-time control.
+      </p>
+      <figure class="media-block">
+        <img
+          src="assets/method-crop-hi.png"
+          alt="S-VAM method architecture."
+          loading="lazy"
+        >
+        <figcaption>Architecture of the S-VAM pipeline.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section">
+      <h2>Experiments</h2>
+      <div class="experiment-group">
+        <h3>Simulation Benchmarks</h3>
+        <figure class="media-block">
+          <img
+            src="assets/table-calvin.png"
+            alt="Quantitative comparison table on CALVIN."
+            loading="lazy"
+          >
+          <figcaption>CALVIN benchmark. S-VAM achieves the best average sequence length and strongest later-stage success rates.</figcaption>
+        </figure>
+        <figure class="media-block">
+          <img
+            src="assets/table-metaworld.png"
+            alt="Quantitative comparison table on MetaWorld."
+            loading="lazy"
+          >
+          <figcaption>MetaWorld benchmark. S-VAM delivers the highest overall average and the clearest gain on hard tasks.</figcaption>
+        </figure>
+      </div>
+
+      <div class="experiment-group">
+        <h3>Qualitative Comparison</h3>
+        <figure class="media-block">
+          <img
+            src="assets/fig-qual-calvin.png"
+            alt="Qualitative comparison on CALVIN."
+            loading="lazy"
+          >
+          <figcaption>CALVIN qualitative comparison. The distilled foresight anchors a coherent attention trajectory and successful execution.</figcaption>
+        </figure>
+        <figure class="media-block">
+          <img
+            src="assets/fig-qual-metaworld.png"
+            alt="Qualitative comparison on MetaWorld."
+            loading="lazy"
+          >
+          <figcaption>MetaWorld qualitative comparison. S-VAM aligns semantic and geometric foresight with precise target-oriented manipulation.</figcaption>
+        </figure>
+      </div>
+
+      <div class="experiment-group">
+        <h3>Real-World Experiments</h3>
+        <figure class="media-block">
+          <img
+            src="assets/results-crop-hi.png"
+            alt="Real-world experimental results for S-VAM."
+            loading="lazy"
+          >
+          <figcaption>Real-world results on four bimanual manipulation tasks, with higher success rates than VPP while maintaining an effective 25 Hz control loop.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>BibTeX</h2>
+      <div class="bibtex-block">
+        <pre id="citation-text"><code>@inproceedings{svam2026,
+  title={S-VAM: Shortcut Video-Action Model by Self-Distilling Geometric and Semantic Foresight},
+  author={Anonymous},
+  booktitle={ECCV 2026 Submission},
+  year={2026}
+}</code></pre>
+        <div class="copy-row">
+          <button class="copy-button" type="button" data-copy-target="citation-text">Copy</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
