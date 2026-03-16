@@ -79,11 +79,18 @@
         coherent geometric and semantic representations via a single forward pass.
       </p>
       <figure class="media-block">
-        <img
-          src="assets/fig-intro-imgs.png"
-          alt="Overview figure for S-VAM showing the shortcut from one-step features to geometric and semantic foresight."
-          loading="lazy"
-        >
+        <div class="pdf-frame pdf-frame-intro">
+          <object
+            class="pdf-object"
+            data="imgs/teaser_35.pdf"
+            type="application/pdf"
+            aria-label="Overview figure for S-VAM showing the shortcut from one-step features to geometric and semantic foresight."
+          >
+            <p class="pdf-fallback">
+              <a href="imgs/teaser_35.pdf" target="_blank" rel="noreferrer">Open original intro figure PDF</a>
+            </p>
+          </object>
+        </div>
         <figcaption>
           Motivation and overview of our shortcut video-action model. One-step feature extraction
           is fast but yields noisy and entangled representations, whereas multi-step video
@@ -107,11 +114,18 @@
         for the downstream diffusion policy to predict precise robot action.
       </p>
       <figure class="media-block">
-        <img
-          src="assets/fig-method-imgs.png"
-          alt="S-VAM method architecture."
-          loading="lazy"
-        >
+        <div class="pdf-frame pdf-frame-method">
+          <object
+            class="pdf-object"
+            data="imgs/method_34.pdf"
+            type="application/pdf"
+            aria-label="S-VAM method architecture."
+          >
+            <p class="pdf-fallback">
+              <a href="imgs/method_34.pdf" target="_blank" rel="noreferrer">Open original method figure PDF</a>
+            </p>
+          </object>
+        </div>
         <figcaption>
           Architecture of S-VAM. The core technical novelty lies in establishing a shortcut that
           bypasses the prohibitive latency of iterative video generation. Specialized decouplers
@@ -126,23 +140,197 @@
       <h2>Experiments</h2>
       <div class="experiment-group">
         <h3>Simulation Benchmarks</h3>
-        <figure class="media-block">
-          <img
-            src="assets/table-calvin.png"
-            alt="Quantitative comparison table on CALVIN."
-            loading="lazy"
-          >
+        <figure class="media-block table-block">
+          <div class="table-scroll">
+            <table class="result-table" aria-label="Quantitative comparison on CALVIN">
+              <thead>
+                <tr>
+                  <th rowspan="2">Category</th>
+                  <th rowspan="2">Method</th>
+                  <th colspan="5"><em>i</em><sup>th</sup> Task Success Rate</th>
+                  <th rowspan="2">Avg. Len. &uarr;</th>
+                </tr>
+                <tr>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th>4</th>
+                  <th>5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="category" rowspan="4">Direct Action<br>Learning Methods</td>
+                  <td>OpenVLA</td>
+                  <td>91.3</td>
+                  <td>77.8</td>
+                  <td>62.0</td>
+                  <td>52.1</td>
+                  <td>43.5</td>
+                  <td>3.27</td>
+                </tr>
+                <tr>
+                  <td>CLOVER</td>
+                  <td class="best">96.0</td>
+                  <td>83.5</td>
+                  <td>70.8</td>
+                  <td>57.5</td>
+                  <td>45.4</td>
+                  <td>3.53</td>
+                </tr>
+                <tr>
+                  <td>&pi;<sub>0</sub></td>
+                  <td>93.7</td>
+                  <td>83.2</td>
+                  <td>74.0</td>
+                  <td>62.9</td>
+                  <td>51.0</td>
+                  <td>3.65</td>
+                </tr>
+                <tr>
+                  <td>Spatial Forcing</td>
+                  <td>93.6</td>
+                  <td>85.8</td>
+                  <td>78.4</td>
+                  <td>72.0</td>
+                  <td>64.6</td>
+                  <td>3.94</td>
+                </tr>
+                <tr>
+                  <td class="category" rowspan="5">Predictive<br>Methods</td>
+                  <td>SuSIE</td>
+                  <td>87.0</td>
+                  <td>69.0</td>
+                  <td>49.0</td>
+                  <td>38.0</td>
+                  <td>26.0</td>
+                  <td>2.69</td>
+                </tr>
+                <tr>
+                  <td>VPP</td>
+                  <td>90.9</td>
+                  <td>81.5</td>
+                  <td>71.3</td>
+                  <td>62.0</td>
+                  <td>51.8</td>
+                  <td>3.58</td>
+                </tr>
+                <tr>
+                  <td>Uni-VLA</td>
+                  <td>95.5</td>
+                  <td>85.8</td>
+                  <td>74.8</td>
+                  <td>66.9</td>
+                  <td>56.5</td>
+                  <td>3.80</td>
+                </tr>
+                <tr>
+                  <td>HiF-VLA</td>
+                  <td>93.5</td>
+                  <td class="second">87.4</td>
+                  <td class="second">81.4</td>
+                  <td class="second">75.9</td>
+                  <td class="best">69.4</td>
+                  <td class="second">4.08</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td><strong>S-VAM (our)</strong></td>
+                  <td class="second">95.8</td>
+                  <td class="best">90.7</td>
+                  <td class="best">83.7</td>
+                  <td class="best">77.0</td>
+                  <td class="second">68.9</td>
+                  <td class="best">4.16</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <figcaption>
             Quantitative comparison on CALVIN. We report stage-wise success rates (1-5) and
             average sequence length, with best and second-best results highlighted accordingly.
           </figcaption>
         </figure>
-        <figure class="media-block">
-          <img
-            src="assets/table-metaworld.png"
-            alt="Quantitative comparison table on MetaWorld."
-            loading="lazy"
-          >
+        <figure class="media-block table-block">
+          <div class="table-scroll">
+            <table class="result-table" aria-label="Quantitative comparison on MetaWorld">
+              <thead>
+                <tr>
+                  <th rowspan="2">Category</th>
+                  <th rowspan="2">Method</th>
+                  <th>Easy</th>
+                  <th>Middle</th>
+                  <th>Hard</th>
+                  <th>Average &uarr;</th>
+                </tr>
+                <tr>
+                  <th>(28 tasks)</th>
+                  <th>(11 tasks)</th>
+                  <th>(11 tasks)</th>
+                  <th>(50 tasks)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="category" rowspan="3">Direct Action<br>Learning Methods</td>
+                  <td>RT-1</td>
+                  <td>0.605</td>
+                  <td>0.042</td>
+                  <td>0.015</td>
+                  <td>0.346</td>
+                </tr>
+                <tr>
+                  <td>Diffusion Policy</td>
+                  <td>0.442</td>
+                  <td>0.062</td>
+                  <td>0.095</td>
+                  <td>0.279</td>
+                </tr>
+                <tr>
+                  <td>Spatial Forcing</td>
+                  <td>0.737</td>
+                  <td>0.436</td>
+                  <td>0.451</td>
+                  <td>0.609</td>
+                </tr>
+                <tr>
+                  <td class="category" rowspan="5">Predictive<br>Methods</td>
+                  <td>SuSIE</td>
+                  <td>0.560</td>
+                  <td>0.196</td>
+                  <td>0.255</td>
+                  <td>0.410</td>
+                </tr>
+                <tr>
+                  <td>GR-1</td>
+                  <td>0.725</td>
+                  <td>0.327</td>
+                  <td>0.451</td>
+                  <td>0.574</td>
+                </tr>
+                <tr>
+                  <td>HiF-VLA</td>
+                  <td>0.729</td>
+                  <td>0.364</td>
+                  <td>0.404</td>
+                  <td>0.577</td>
+                </tr>
+                <tr>
+                  <td>VPP</td>
+                  <td class="best">0.818</td>
+                  <td class="second">0.493</td>
+                  <td class="second">0.526</td>
+                  <td class="second">0.682</td>
+                </tr>
+                <tr class="highlight-row">
+                  <td><strong>S-VAM (our)</strong></td>
+                  <td class="second">0.793</td>
+                  <td class="best">0.607</td>
+                  <td class="best">0.684</td>
+                  <td class="best">0.728</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <figcaption>
             Quantitative comparison on MetaWorld. We report success rates on easy, middle, and
             hard tasks, together with the overall average, with best and second-best results
@@ -154,11 +342,18 @@
       <div class="experiment-group">
         <h3>Qualitative Comparison</h3>
         <figure class="media-block">
-          <img
-            src="assets/fig-qual-calvin-imgs.png"
-            alt="Qualitative comparison on CALVIN."
-            loading="lazy"
-          >
+          <div class="pdf-frame pdf-frame-qual">
+            <object
+              class="pdf-object"
+              data="imgs/calvin_32.pdf"
+              type="application/pdf"
+              aria-label="Qualitative comparison on CALVIN."
+            >
+              <p class="pdf-fallback">
+                <a href="imgs/calvin_32.pdf" target="_blank" rel="noreferrer">Open original CALVIN qualitative figure PDF</a>
+              </p>
+            </object>
+          </div>
           <figcaption>
             Qualitative comparison on CALVIN. VPP utilizes entangled one-step features, resulting
             in an erratic attention trajectory that explicitly contradicts the language instruction
@@ -168,11 +363,18 @@
           </figcaption>
         </figure>
         <figure class="media-block">
-          <img
-            src="assets/fig-qual-metaworld-imgs.png"
-            alt="Qualitative comparison on MetaWorld."
-            loading="lazy"
-          >
+          <div class="pdf-frame pdf-frame-qual">
+            <object
+              class="pdf-object"
+              data="imgs/meta_32.pdf"
+              type="application/pdf"
+              aria-label="Qualitative comparison on MetaWorld."
+            >
+              <p class="pdf-fallback">
+                <a href="imgs/meta_32.pdf" target="_blank" rel="noreferrer">Open original MetaWorld qualitative figure PDF</a>
+              </p>
+            </object>
+          </div>
           <figcaption>
             Qualitative comparison on MetaWorld. VPP utilizes entangled one-step features,
             resulting in a diverging attention trajectory that completely misses the target object.
@@ -186,11 +388,18 @@
       <div class="experiment-group">
         <h3>Real-World Experiments</h3>
         <figure class="media-block">
-          <img
-            src="assets/fig-realworld-imgs.png"
-            alt="Real-world experimental results for S-VAM."
-            loading="lazy"
-          >
+          <div class="pdf-frame pdf-frame-realworld">
+            <object
+              class="pdf-object"
+              data="imgs/real_world_35.pdf"
+              type="application/pdf"
+              aria-label="Real-world experimental results for S-VAM."
+            >
+              <p class="pdf-fallback">
+                <a href="imgs/real_world_35.pdf" target="_blank" rel="noreferrer">Open original real-world figure PDF</a>
+              </p>
+            </object>
+          </div>
           <figcaption>
             Multi-task real-world experiments. We deploy S-VAM on a dual-arm Cobot using only
             monocular front-camera observations. S-VAM demonstrates a significant success-rate
