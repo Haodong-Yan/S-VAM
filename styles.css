@@ -214,8 +214,8 @@ main {
   vertical-align: middle;
 }
 
-.result-table thead th,
-.result-table tbody td:not(:first-child):not(:nth-child(2)) {
+.result-table th,
+.result-table td {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }
@@ -224,11 +224,6 @@ main {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 19px;
   font-weight: 600;
-}
-
-.result-table tbody td:first-child,
-.result-table tbody td:nth-child(2) {
-  text-align: left;
 }
 
 .result-table .category {
