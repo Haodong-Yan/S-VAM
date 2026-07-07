@@ -35,11 +35,15 @@ model:
   use_all_layer: True
   extract_layer_idx: 1
   use_position_encoding: False
-  use_gripper_features: True
+  use_gripper_features: False
   debug_hidden2dino: False
   debug_hidden2dino_dir: null
   use_gt_dino_condition: False
-  
+  use_hidden_dino_concat: True
+  use_hidden_dino_dpa_concat: True
+  hidden2dino_use_ref_override: True
+  hidden2dpa_use_ref_override: True
+
   optimizer:
     _target_: torch.optim.AdamW
     transformer_weight_decay: 0.05

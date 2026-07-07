@@ -24,9 +24,4 @@ accelerate launch \
   --root_data_dir "${CALVIN_DATA_DIR}" \
   --video_model_path "${VIDEO_MODEL_PATH}" \
   --text_encoder_path "${TEXT_ENCODER_PATH}" \
-  --log_dir "${LOG_DIR}" \
-  --use_ref_frame \
-  --use_dpa_ref_frame \
-  --use_hidden_dino_concat \
-  --use_hidden_dino_dpa_concat \
-  --disable_gripper_features
+  --log_dir "${LOG_DIR}"

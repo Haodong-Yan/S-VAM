@@ -30,9 +30,4 @@ python policy_evaluation/calvin_evaluate_our.py \
   --calvin_abc_dir "${CALVIN_DATA_DIR}" \
   --video_model_path "${VIDEO_MODEL_PATH}" \
   --clip_model_path "${CLIP_MODEL_PATH}" \
-  --use_ref_frame \
-  --use_dpa_ref_frame \
-  --use_hidden_dino_concat \
-  --use_hidden_dino_dpa_concat \
-  --disable_gripper_features \
   --force_eval

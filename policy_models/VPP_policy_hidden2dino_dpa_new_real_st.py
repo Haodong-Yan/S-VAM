@@ -91,7 +91,7 @@ class VPP_Policy(pl.LightningModule):
             pretrained_model_path: str = '',
             text_encoder_path: str = '',
             use_position_encoding: bool = True,
-            use_gripper_features: bool = True,
+            use_gripper_features: bool = False,
             Former_depth: int = 3,
             Former_heads: int = 8,
             Former_dim_head: int = 64,
@@ -108,21 +108,21 @@ class VPP_Policy(pl.LightningModule):
             use_pipeline_cpu_offload: bool = False,
             debug_hidden2dino: bool = False,
             debug_hidden2dino_dir: Optional[str] = None,
-            hidden2dino_use_ref_override: Optional[bool] = None,
-            hidden2dpa_use_ref_override: Optional[bool] = None,
+            hidden2dino_use_ref_override: Optional[bool] = True,
+            hidden2dpa_use_ref_override: Optional[bool] = True,
             use_gt_dino_condition: bool = False,
             gt_dino_chunk: int = 32,
             bypass_video_former: bool = False,
             without_svd: bool = False,
-            use_hidden_dino_concat: bool = False,
-            use_hidden_dino_dpa_concat: bool = False,
+            use_hidden_dino_concat: bool = True,
+            use_hidden_dino_dpa_concat: bool = True,
             use_hidden_dpa_concat: bool = False,
     ):
         super(VPP_Policy, self).__init__()
         self.latent_dim = latent_dim
         self.use_all_layer = use_all_layer
         self.use_position_encoding = use_position_encoding
-        self.use_gripper_features = use_gripper_features
+        self.use_gripper_features = False
 
         self.act_window_size = act_window_size
         self.action_dim = action_dim
@@ -136,10 +136,10 @@ class VPP_Policy(pl.LightningModule):
         self.gt_dino_chunk = gt_dino_chunk
         self.bypass_video_former = bypass_video_former
         # Keep eval-time constructor compatible with the wo_hidden2dino policy.
-        self.without_svd = without_svd
-        self.use_hidden_dpa_concat = use_hidden_dpa_concat
-        self.use_hidden_dino_concat = use_hidden_dino_concat
-        self.use_hidden_dino_dpa_concat = use_hidden_dino_dpa_concat
+        self.without_svd = False
+        self.use_hidden_dpa_concat = False
+        self.use_hidden_dino_concat = True
+        self.use_hidden_dino_dpa_concat = True
         self.num_latents = num_latents
         self.bypass_proj: Optional[nn.Module] = None
 
@@ -184,12 +184,7 @@ class VPP_Policy(pl.LightningModule):
                 self.hidden2dpa_model_kwargs.get("W", self.hidden2dpa_spatial_hw[1]),
             )
             self.hidden2dpa_out_dim = self.hidden2dpa_model_kwargs.get("C_out", self.hidden2dpa_out_dim)
-            self.hidden2dpa_use_ref = hidden2dpa_cfg.get("use_ref_frame", False)
-            if hidden2dpa_use_ref_override is not None:
-                self.hidden2dpa_use_ref = hidden2dpa_use_ref_override
-            elif self.hidden2dpa_use_ref:
-                logger.warning("Hidden2DPA config requests ref frame; disabling ref usage because ref tokens are not provided.")
-                self.hidden2dpa_use_ref = False
+            self.hidden2dpa_use_ref = True
 
         if self.use_gt_dino_condition:
             self.Former_num_time_embeds = self.act_window_size
@@ -321,9 +316,7 @@ class VPP_Policy(pl.LightningModule):
             hidden_model_kwargs.get("W", 16),
         )
         self.hidden2dino_out_dim = hidden_model_kwargs.get("C_out", self.hidden2dino_out_dim)
-        self.hidden2dino_use_ref = hidden2dino_cfg.get("use_ref_frame", False)
-        if hidden2dino_use_ref_override is not None:
-            self.hidden2dino_use_ref = hidden2dino_use_ref_override
+        self.hidden2dino_use_ref = True
 
         
         self.gt_dino_encoder = None

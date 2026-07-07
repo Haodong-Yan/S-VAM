@@ -56,7 +56,7 @@ model:
   pretrained_model_path: ???  # path to svd-robot-calvin-ft
   text_encoder_path: ???  # path to clip-vit-base-patch32
   use_position_encoding: False # # should be same with finetune settings
-  use_gripper_features: True
+  use_gripper_features: False
   use_Former: 3d
   timestep: 20
   use_all_layer: True
@@ -66,8 +66,10 @@ model:
   use_gt_dino_condition: False
   gt_dino_chunk: 32
   bypass_video_former: False
-  use_hidden_dino_dpa_concat: False
-  hidden2dpa_use_ref_override: null
+  use_hidden_dino_concat: True
+  use_hidden_dino_dpa_concat: True
+  hidden2dino_use_ref_override: True
+  hidden2dpa_use_ref_override: True
   optimizer:
     _target_: torch.optim.AdamW
     transformer_weight_decay: 0.05

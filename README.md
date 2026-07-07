@@ -105,26 +105,21 @@ Download the following pretrained models:
 |-------|--------|------|---------|
 | `svd-robot-calvin-ft` | [HuggingFace](https://huggingface.co/yjguo/svd-robot-calvin-ft) | ~8 GB | Finetuned SVD video model |
 | `clip-vit-base-patch32` | [HuggingFace](https://huggingface.co/openai/clip-vit-base-patch32) | ~600 MB | Text encoder (frozen) |
-| `dp-calvin` | [HuggingFace](https://huggingface.co/yjguo/dp-calvin) | ~1 GB | Pretrained action model checkpoint |
-| `s-vam-weights` | [ModelScope](https://modelscope.cn/models/haodong123/s-vam-weights) | ~2.5 GB | Decoupler weights (hidden2dino + hidden2dpa) |
+| `s-vam-weights` | [ModelScope](https://modelscope.cn/models/haodong123/s-vam-weights) | ~6 GB | Decoupler weights + trained action model |
 
 ```bash
 # Download base models from HuggingFace
 huggingface-cli download yjguo/svd-robot-calvin-ft --local-dir ./svd-robot-calvin-ft
 huggingface-cli download openai/clip-vit-base-patch32 --local-dir ./clip-vit-base-patch32
-huggingface-cli download yjguo/dp-calvin --local-dir ./dp-calvin
 
-# Download decoupler weights from ModelScope
+# Download S-VAM weights from ModelScope
 pip install modelscope
-modelscope download haodong123/s-vam-weights hidden2dino/checkpoint_epoch10.pt \
-  --local_dir ./decoupler_weights
-modelscope download haodong123/s-vam-weights hidden2dpa/checkpoint_epoch5.pt \
-  --local_dir ./decoupler_weights
-# Place weights into the expected directories:
-cp decoupler_weights/hidden2dino/checkpoint_epoch10.pt \
-  hidden2dino/runs_calvin_new_st_model-hidden1024-layers4-head8/run_20260321_202023/
-cp decoupler_weights/hidden2dpa/checkpoint_epoch5.pt \
-  hidden2dpa/runs_da3_calvin_st_ref_large/run_20260323_220858/
+modelscope download haodong123/s-vam-weights --local_dir ./s-vam-weights
+# Place decoupler weights into the expected directories:
+cp s-vam-weights/hidden2dino/hidden2dino.pt \
+  hidden2dino/runs_calvin_new_st_model-hidden1024-layers4-head8/run_20260321_202023/checkpoint_epoch10.pt
+cp s-vam-weights/hidden2dpa/hidden2dpa.pt \
+  hidden2dpa/runs_da3_calvin_st_ref_large/run_20260323_220858/checkpoint_epoch5.pt
 ```
 
 ## Training :rocket:
@@ -139,12 +134,7 @@ accelerate launch \
   --root_data_dir ${CALVIN_DATA_DIR} \
   --video_model_path ${VIDEO_MODEL_PATH} \
   --text_encoder_path ${TEXT_ENCODER_PATH} \
-  --log_dir ./logs/s_vam_calvin \
-  --use_ref_frame \
-  --use_dpa_ref_frame \
-  --use_hidden_dino_concat \
-  --use_hidden_dino_dpa_concat \
-  --disable_gripper_features
+  --log_dir ./logs/s_vam_calvin
 ```
 
 Or use the convenience script:
@@ -155,17 +145,6 @@ VIDEO_MODEL_PATH=/path/to/svd-robot-calvin-ft \
 TEXT_ENCODER_PATH=/path/to/clip-vit-base-patch32 \
 bash scripts/train_calvin.sh
 ```
-
-**Key flags:**
-
-| Flag | Description |
-|------|-------------|
-| `--use_ref_frame` | Reference-frame conditioning in semantic decoupler |
-| `--use_dpa_ref_frame` | Reference-frame conditioning in geometric decoupler |
-| `--use_hidden_dino_concat` | Concatenate decoded DINOv2 tokens into the policy |
-| `--use_hidden_dino_dpa_concat` | Concatenate decoded DPAv3 tokens into the policy |
-| `--disable_gripper_features` | Static camera only (no gripper camera) |
-| `--without_svd` | Ablation: skip SVD feature extraction |
 
 Checkpoints are saved every 20k steps to `<log_dir>/<run_tag>/checkpoints/`.
 
@@ -181,11 +160,6 @@ python policy_evaluation/calvin_evaluate_our.py \
   --calvin_abc_dir ${CALVIN_DATA_DIR} \
   --video_model_path ${VIDEO_MODEL_PATH} \
   --clip_model_path ${CLIP_MODEL_PATH} \
-  --use_ref_frame \
-  --use_dpa_ref_frame \
-  --use_hidden_dino_concat \
-  --use_hidden_dino_dpa_concat \
-  --disable_gripper_features \
   --force_eval
 ```
 

@@ -779,8 +779,6 @@ if __name__ == "__main__":
     parser.add_argument("--action_model_folder", type=str, default="")
     parser.add_argument("--clip_model_path", type=str, default="")
     parser.add_argument("--calvin_abc_dir", type=str, default="")
-    parser.add_argument("--use_ref_frame", action="store_true", help="Force enable use_ref_frame for hidden2dino")
-    parser.add_argument("--no_use_ref_frame", action="store_true", help="Force disable use_ref_frame for hidden2dino")
     parser.add_argument(
         "--use_gt_dino_condition",
         action="store_true",
@@ -796,42 +794,6 @@ if __name__ == "__main__":
         "--bypass_video_former",
         action="store_true",
         help="Skip VideoFormer at evaluation time and feed GT-DINO tokens directly to the diffusion policy.",
-    )
-    parser.add_argument(
-        "--use_hidden_dino_concat",
-        action="store_true",
-        help="Concatenate SVD hidden states with predicted DINO tokens before VideoFormer.",
-    )
-    parser.add_argument(
-        "--use_hidden_dpa_concat",
-        action="store_true",
-        help="Use hidden DPA tokens (Depth Anything) for concatenation.",
-    )
-
-    parser.add_argument(
-        "--without_svd",
-        action="store_true",
-        help="Skip SVD compression for the video features.",
-    )
-    parser.add_argument(
-        "--no_use_dpa_ref_frame",
-        action="store_true",
-        help="Force disable use_ref_frame for hidden2dpa.",
-    )
-    parser.add_argument(
-        "--use_hidden_dino_dpa_concat",
-        action="store_true",
-        help="Concatenate SVD hidden states with predicted DINO tokens before VideoFormer.",
-    )
-    parser.add_argument(
-        "--use_dpa_ref_frame",
-        action="store_true",
-        help="Use DPA reference frame for hidden2dino.",
-    )
-    parser.add_argument(
-        "--disable_gripper_features",
-        action="store_true",
-        help="Use only static-camera features (disable gripper features) in the policy.",
     )
     parser.add_argument(
         "--force_eval",
@@ -903,27 +865,11 @@ if __name__ == "__main__":
     if args.num_videos is not None:
         cfg.num_videos = args.num_videos
 
-    if args.use_ref_frame:
-        cfg.model.hidden2dino_use_ref_override = True
-    elif args.no_use_ref_frame:
-        cfg.model.hidden2dino_use_ref_override = False
     if args.use_gt_dino_condition:
         cfg.model.use_gt_dino_condition = True
     if args.gt_dino_chunk is not None:
         cfg.model.gt_dino_chunk = args.gt_dino_chunk
     if args.bypass_video_former:
         cfg.model.bypass_video_former = True
-    if args.use_hidden_dino_concat:
-        cfg.model.use_hidden_dino_concat = True
-    if args.use_hidden_dpa_concat:
-        cfg.model.use_hidden_dpa_concat = True
-    if args.disable_gripper_features:
-        cfg.model.use_gripper_features = False
-    if args.use_hidden_dino_dpa_concat:
-        cfg.model.use_hidden_dino_dpa_concat = True
-    if args.use_dpa_ref_frame:
-        cfg.model.hidden2dpa_use_ref_override = True
-    if args.without_svd:
-        cfg.model.without_svd = True
     main(cfg)
 
