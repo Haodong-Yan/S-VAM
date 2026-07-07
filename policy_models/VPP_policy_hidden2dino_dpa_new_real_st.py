@@ -117,6 +117,8 @@ class VPP_Policy(pl.LightningModule):
             use_hidden_dino_concat: bool = True,
             use_hidden_dino_dpa_concat: bool = True,
             use_hidden_dpa_concat: bool = False,
+            hidden2dino_ckpt: str = '',
+            hidden2dpa_ckpt: str = '',
     ):
         super(VPP_Policy, self).__init__()
         self.latent_dim = latent_dim
@@ -158,12 +160,11 @@ class VPP_Policy(pl.LightningModule):
 
         # Preload Hidden2DPA metadata for condition_dim computation
         if self.use_hidden_dino_dpa_concat:
-            hidden2dpa_run_dir = (
-                HIDDEN2DPA_ROOT / "runs_da3_calvin_st_ref_large" / "run_20260323_220858"
-            )
-            self.hidden2dpa_run_dir = hidden2dpa_run_dir
-            self.hidden2dpa_config_path = hidden2dpa_run_dir / "model_config_resolved.yaml"
-            self.hidden2dpa_ckpt_path = hidden2dpa_run_dir / "checkpoint_epoch5.pt"
+            if not hidden2dpa_ckpt:
+                raise ValueError("--hidden2dpa_ckpt is required.")
+            self.hidden2dpa_ckpt_path = Path(hidden2dpa_ckpt).expanduser().resolve()
+            self.hidden2dpa_run_dir = self.hidden2dpa_ckpt_path.parent
+            self.hidden2dpa_config_path = self.hidden2dpa_run_dir / "model_config_resolved.yaml"
             if not self.hidden2dpa_config_path.exists() or not self.hidden2dpa_ckpt_path.exists():
                 raise FileNotFoundError(
                     f"Hidden2DPA resources missing at {hidden2dpa_run_dir}. "
@@ -292,13 +293,11 @@ class VPP_Policy(pl.LightningModule):
         else:
             # Keep only necessary components on the target device.
             self.TVP_encoder.text_encoder = self.TVP_encoder.text_encoder.to(self.device)
-        #hidden2dino_run_dir = HIDDEN2DINO_ROOT / "runs" / "run_20251103_121452"
-        
-        hidden2dino_run_dir = (
-            HIDDEN2DINO_ROOT / "runs_calvin_new_st_model-hidden1024-layers4-head8" / "run_20260321_202023"
-        )
+        if not hidden2dino_ckpt:
+            raise ValueError("--hidden2dino_ckpt is required.")
+        hidden2dino_ckpt_path = Path(hidden2dino_ckpt).expanduser().resolve()
+        hidden2dino_run_dir = hidden2dino_ckpt_path.parent
         hidden2dino_config_path = hidden2dino_run_dir / "model_config_resolved.yaml"
-        hidden2dino_ckpt_path = hidden2dino_run_dir / "checkpoint_epoch10.pt"
         if not hidden2dino_config_path.exists() or not hidden2dino_ckpt_path.exists():
             raise FileNotFoundError(
                 f"Hidden2DINO resources missing at {hidden2dino_run_dir}. "

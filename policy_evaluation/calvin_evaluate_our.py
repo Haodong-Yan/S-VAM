@@ -778,6 +778,8 @@ if __name__ == "__main__":
     parser.add_argument("--video_model_path", type=str, default="")
     parser.add_argument("--action_model_folder", type=str, default="")
     parser.add_argument("--clip_model_path", type=str, default="")
+    parser.add_argument("--hidden2dino_ckpt", type=str, required=True, help="Path to hidden2dino checkpoint.")
+    parser.add_argument("--hidden2dpa_ckpt", type=str, required=True, help="Path to hidden2dpa checkpoint.")
     parser.add_argument("--calvin_abc_dir", type=str, default="")
     parser.add_argument(
         "--use_gt_dino_condition",
@@ -871,5 +873,7 @@ if __name__ == "__main__":
         cfg.model.gt_dino_chunk = args.gt_dino_chunk
     if args.bypass_video_former:
         cfg.model.bypass_video_former = True
+    cfg.model.hidden2dino_ckpt = args.hidden2dino_ckpt
+    cfg.model.hidden2dpa_ckpt = args.hidden2dpa_ckpt
     main(cfg)
 

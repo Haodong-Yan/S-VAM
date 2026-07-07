@@ -537,6 +537,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--video_model_path", type=str, default="")
     parser.add_argument("--text_encoder_path", type=str, default="")
+    parser.add_argument("--hidden2dino_ckpt", type=str, required=True, help="Path to hidden2dino checkpoint.")
+    parser.add_argument("--hidden2dpa_ckpt", type=str, required=True, help="Path to hidden2dpa checkpoint.")
     parser.add_argument("--root_data_dir", type=str, default="")
     parser.add_argument(
         "--cuda_devices",
@@ -622,5 +624,7 @@ if __name__ == "__main__":
         cfg.log_dir = args.log_dir
     if args.batch_size is not None:
         cfg.batch_size = args.batch_size
+    cfg.model.hidden2dino_ckpt = args.hidden2dino_ckpt
+    cfg.model.hidden2dpa_ckpt = args.hidden2dpa_ckpt
 
     train(cfg)
