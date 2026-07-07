@@ -20,7 +20,7 @@ Xin Gong, Yingjie Cai, Guanyi Zhao, Xu Yan, Bingbing Liu, Ying-Cong Chen, Haoang
 ## Overview
 
 <p align="center">
-  <img src="assets/method.png" width="100%">
+  <img src="assets/intro.png" width="90%">
 </p>
 
 S-VAM establishes a *shortcut* that foresees coherent geometric and semantic representations in a single forward pass. Lightweight decouplers are trained via self-distillation to map one-step diffusion features to DINOv2 (semantic) and Depth Anything v3 (geometric) targets. A Uni-Perceiver then aggregates these foreseen representations with original diffusion features to condition an EDM-based diffusion policy.
